@@ -10,30 +10,27 @@ public class SingletonTests
     {
         var provider = new ServiceCollection()
             .AddSingleton<IService, Service>()
-            .AddSingleton<AggregatorService>()
             .BuildServiceProvider();
 
-        var aggregatorService = provider.GetRequiredService<AggregatorService>();
+        var service1 = provider.GetRequiredService<IService>();
+        var service2 = provider.GetRequiredService<IService>();
 
         Assert.Equal(
-            aggregatorService.Service1Id,
-            aggregatorService.Service2Id
+            service1.Id,
+            service2.Id
         );
     }
 
     [Fact]
     public void ManualInitialization()
     {
-        IService service = new Service();
-
-        var aggregatorService = new AggregatorService(
-            service,
-            service
-        );
+        IService service1;
+        IService service2;
+        service1 = service2 = new Service();
 
         Assert.Equal(
-            aggregatorService.Service1Id,
-            aggregatorService.Service2Id
+            service1.Id,
+            service2.Id
         );
     }
 }
@@ -46,20 +43,4 @@ public interface IService
 public class Service : IService
 {
     public Guid Id { get; } = Guid.NewGuid();
-}
-
-public class AggregatorService
-{
-    private readonly IService _service1;
-    private readonly IService _service2;
-
-    public AggregatorService(IService service1, IService service2)
-    {
-        _service1 = service1;
-        _service2 = service2;
-    }
-
-    public Guid Service1Id => _service1.Id;
-
-    public Guid Service2Id => _service2.Id;
 }
