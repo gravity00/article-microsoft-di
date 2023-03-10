@@ -9,57 +9,57 @@ public class SingletonTests
     public void ContainerInitialization()
     {
         var provider = new ServiceCollection()
-            .AddSingleton<ISingletonService, SingletonService>()
-            .AddSingleton<TestService>()
+            .AddSingleton<IService, Service>()
+            .AddSingleton<AggregatorService>()
             .BuildServiceProvider();
 
-        var testService = provider.GetRequiredService<TestService>();
+        var aggregatorService = provider.GetRequiredService<AggregatorService>();
 
         Assert.Equal(
-            testService.SingletonService1Id,
-            testService.SingletonService2Id
+            aggregatorService.Service1Id,
+            aggregatorService.Service2Id
         );
     }
 
     [Fact]
     public void ManualInitialization()
     {
-        ISingletonService singletonService = new SingletonService();
+        IService service = new Service();
 
-        var testService = new TestService(
-            singletonService,
-            singletonService
+        var aggregatorService = new AggregatorService(
+            service,
+            service
         );
 
         Assert.Equal(
-            testService.SingletonService1Id,
-            testService.SingletonService2Id
+            aggregatorService.Service1Id,
+            aggregatorService.Service2Id
         );
     }
 }
 
-public interface ISingletonService
+public interface IService
 {
     Guid Id { get; }
 }
 
-public class SingletonService : ISingletonService
+public class Service : IService
 {
     public Guid Id { get; } = Guid.NewGuid();
 }
 
-public class TestService
+public class AggregatorService
 {
-    private readonly ISingletonService _singletonService1;
-    private readonly ISingletonService _singletonService2;
+    private readonly IService _service1;
+    private readonly IService _service2;
 
-    public TestService(ISingletonService singletonService1, ISingletonService singletonService2)
+    public AggregatorService(IService service1, IService service2)
     {
-        _singletonService1 = singletonService1;
-        _singletonService2 = singletonService2;
+        _service1 = service1;
+        _service2 = service2;
     }
 
-    public Guid SingletonService1Id => _singletonService1.Id;
+    public Guid Service1Id => _service1.Id;
 
-    public Guid SingletonService2Id => _singletonService2.Id;
+    public Guid Service2Id => _service2.Id;
 }
