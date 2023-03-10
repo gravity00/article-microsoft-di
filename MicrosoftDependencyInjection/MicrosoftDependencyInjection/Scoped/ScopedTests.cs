@@ -64,7 +64,7 @@ public class ScopedTests
         IService secondScopeService1;
         IService secondScopeService2;
 
-        // first scope
+        // simulate first scope
         {
             firstScopeService1 = firstScopeService2 = new Service();
 
@@ -74,7 +74,7 @@ public class ScopedTests
             );
         }
 
-        // second scope
+        // simulate second scope
         {
             secondScopeService1 = secondScopeService2 = new Service();
 
