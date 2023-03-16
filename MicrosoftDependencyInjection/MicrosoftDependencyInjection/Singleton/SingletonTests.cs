@@ -8,7 +8,7 @@ public class SingletonTests
     [Fact]
     public void ContainerInitialization()
     {
-        var provider = new ServiceCollection()
+        using var provider = new ServiceCollection()
             .AddSingleton<IService, Service>()
             .BuildServiceProvider();
 

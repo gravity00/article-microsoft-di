@@ -8,7 +8,7 @@ public class ScopedTests
     [Fact]
     public void ContainerInitialization()
     {
-        var provider = new ServiceCollection()
+        using var provider = new ServiceCollection()
             .AddScoped<IService, Service>()
             .BuildServiceProvider(new ServiceProviderOptions
             {

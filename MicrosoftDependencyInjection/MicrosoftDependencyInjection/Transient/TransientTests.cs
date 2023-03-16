@@ -8,7 +8,7 @@ public class TransientTests
     [Fact]
     public void ContainerInitialization()
     {
-        var provider = new ServiceCollection()
+        using var provider = new ServiceCollection()
             .AddTransient<IService, Service>()
             .BuildServiceProvider();
 
