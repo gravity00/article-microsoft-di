@@ -13,9 +13,8 @@ public class CollectionTests
             .AddSingleton<IService, ServiceB>()
             .BuildServiceProvider();
 
-        var services = provider.GetServices<IService>().ToArray();
-
-        Assert.Equal(2, services.Length);
+        var services = provider.GetServices<IService>();
+        
         Assert.Collection(services,
             item => Assert.IsType<ServiceA>(item),
             item => Assert.IsType<ServiceB>(item)
@@ -30,8 +29,7 @@ public class CollectionTests
             new ServiceA(),
             new ServiceB()
         };
-
-        Assert.Equal(2, services.Length);
+        
         Assert.Collection(services,
             item => Assert.IsType<ServiceA>(item),
             item => Assert.IsType<ServiceB>(item)
